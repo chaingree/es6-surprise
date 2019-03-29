@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>es6 带有私有属性和私有方法的类IIFE定义方式</title>
+</head>
+
+<body>
+  <script>
+    // es6 带有私有属性和私有方法的类IIFE定义方式
+    const A = (function privateClass(params) {
+      // 采用弱引用map，垃圾自动回收
+      let pv = new WeakMap()
+      let self = function (t) {
+        return t ? pv.get(t) : t
+      }
+      // 私有属性和方法
+      class Preivate {
+        count = 1
+        log(s) {
+          console.log(s + this.count)
+        }
+      }
+      // 公共属性和方法
+      class A {
+        constructor(name) {
+          pv.set(this, new Preivate())
+          this.name = name
+        }
+
+        add() {
+          self(this).count++
+        }
+
+        log() {
+          self(this).log(this.name)
+        }
+      }
+      return A
+    }())
+    // 实例a
+    let a = new A('a=')
+    a.add()
+    a.add()
+    a.add()
+    // 实例b
+    let b = new A('b=')
+    b.add()
+    // 打印对比
+    a.log() // a=4
+    b.log() // b=2
+  </script>
+</body>
+
+</html>
