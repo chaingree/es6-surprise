@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const times = 1000000000
+    let ct = function () { return (new Date()).getTime() }
+    // 1 在全局域中循环
+    let start1 = ct()
+    let i1 = 0
+    let t1 = times
+    while (i1 < t1) { i1++ }
+    console.log(1,ct() - start1) // 2450毫秒左右，因个人电脑性能而已
+
+    // 2 在{}块级域中循环
+    {
+      let start2 = ct()
+      let i2 = 0
+      let t2 = times
+      while (i2 < t2) { i2++ }
+      console.log(2,ct() - start2)  // 930毫秒左右，因个人电脑性能而已
+    }
+
+    // 3 在function函数域中循环
+    function run() {
+      let start2 = ct()
+      let i2 = 0
+      let t2 = times
+      while (i2 < t2) { i2++ }
+      console.log(3,ct() - start2)  //  930毫秒左右，因个人电脑性能而已
+    }
+    run()
+
+    // 4 变量分布在多级域中
+    {
+      let start2 = ct()
+      let i2 = 0
+      {
+        let t2 = times
+        {
+          let run2 = function(){while (i2 < t2) { i2++ }}
+          run2()
+        }
+      }
+      console.log(4,ct() - start2)  //  2550毫秒左右，因个人电脑性能而已
+    }
+
+    // 5 封装到class中
+    class Run{
+      i = 0
+      t = times
+      run(){
+        while (this.i < this.t) { this.i++ }
+      }
+    }
+    let start3 = ct()
+    let r = new Run()
+    r.run()
+    console.log(5,ct() - start3) // 2240毫秒左右，因个人电脑性能而已
+
+    // 6 封装到class, 去除循环中this.属性引用的模式
+    class Run2{
+      i = 0
+      t = times
+      run(){
+        let i=this.i
+        let t=this.t
+        while (i < t) { i++ }
+      }
+    }
+    let start4= ct()
+    let r2 = new Run2()
+    r2.run()
+    console.log(6,ct() - start4) // 920毫秒左右，因个人电脑性能而已
+
+  </script>
+</body>
+
+</html>
