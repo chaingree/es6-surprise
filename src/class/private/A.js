@@ -1,17 +1,22 @@
-import _ from './private.js'
+import privateCreater from './privateCreater.js'
+
+// 私有化方法
+const _ = privateCreater();
 
 /**
  * 包含公共属性和方法的类定义
  */
 class A{
-  dilog = ''
   constructor(){
     _(this,_A)
   }
 
   log(s){
+    // 打印私有化对象
+    console.log( _(this) )
     _(this).log(s)
   }
+  
 }
 
 
