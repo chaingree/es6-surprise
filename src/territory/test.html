@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>ES6作用域的查询效率</title>
 </head>
 
 <body>
+
   <script>
-    const times = 1000000000
+    const times = 1000000000 //10亿次
     let ct = function () { return (new Date()).getTime() }
     // 1 在全局域中循环
     let start1 = ct()

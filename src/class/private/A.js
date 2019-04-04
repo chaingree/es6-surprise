@@ -1,20 +1,16 @@
 import privateCreater from './privateCreater.js'
 
-// 私有化方法
-const _ = privateCreater();
-
 /**
  * 包含公共属性和方法的类定义
  */
 class A {
   constructor() {
-    _(this, _A)
   }
 
   log(s) {
     // 打印私有化对象
-    console.log(_(this))
-    _(this).log(s)
+    console.log(private_A(this))
+    private_A(this).log(s)
   }
 
   get PI(){
@@ -35,5 +31,11 @@ class _A {
     this.count++
   }
 }
+
+
+
+// 私有化方法
+const private_A = privateCreater(_A);
+
 
 export default A
