@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>ES6 安全的类定义方式测试</h1>
+    <p>
+        使用Object.seal使得类自身和类实例属性不可以动态添加和删除，但是可以修改，唯一的问题是属性值依然可以被修改成别的类型。
+    </p>
+    <p>
+        使用Object.freeze使得类原型链不可以再添加，修改和删除，这样可以保证类的原型链属性被固定下来。但是如果原型链属性上的对象内容是可以被修改的。
+    </p>
+    <script type="module">
+        import A from "./A.js"
+        import B from "./B.js"
+        // Uncaught TypeError: Cannot define property x, object is not extensible
+        // Object.defineProperty(A, 'x', {
+        //     value: '1234',
+        //     writable: false
+        // });
+
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // A.x = '1234'
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // A.prototype.x = '1234'
+        // Uncaught TypeError: Cannot assign to read only property 'log' of object '#<A>'
+        // A.prototype.log = function(){console.log('Ha ha ha')}
+        let a = new A()
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // a.x  = '1234' 
+        // Uncaught TypeError: Cannot assign to read only property 'log' of object '#<A>'
+        // a.log = function(){console.log('Ha ha ha')}
+        a.index = 100
+        // 实例属性值可以被替换类型
+        // a.index = function(){}
+        a.log()
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // B.x = '1234'
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // B.prototype.x = '1234'
+        // Uncaught TypeError: Cannot assign to read only property 'log' of object '#<B>'
+        // B.prototype.log = function(){console.log('Ha ha ha')}
+        let b = new B()
+        // Uncaught TypeError: Cannot add property x, object is not extensible 
+        // b.x  = '1234' 
+        // Uncaught TypeError: Cannot assign to read only property 'log' of object '#<B>'
+        // b.log = function(){console.log('Ha ha ha')}
+        b.log()
+        
+        console.log(a)
+    </script>
+</body>
+
+</html>
